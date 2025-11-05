@@ -3,11 +3,9 @@ pipeline{
 
     environment{
         REPO_URL= "https://github.com/nikhila1511ch/task-2.git"
-        WORK_DIR='task-2'
+        REPO_DIR='-'
         BRANCH_NAME='main'
         DOCKER_REPO="nikhila1511/task-2"
-        REPO_DIR='task-2'
-        REPO_NAME='task-2'
         DOCKER_USERNAME='nikhila1511'
         DOCKER_PASSWORD='Nikhila@1511'
         IMAGE_NAME ='ubuntu'
@@ -17,38 +15,59 @@ pipeline{
         
 
         stages{
-            stage('check and pull') {
+            stage('check'){
                 steps{
                     script{
                         try{
-                            
-
-                            echo "code is already exits.pull latest code from ${REPO_URL} TO ${BRANCH_NAME}"
-                            if(fileExists(WORK_DIR)) {
-                            sh "cd ${WORK_DIR} && git pull origin ${BRANCH_NAME}"
+                            if(fileExists(REPO_DIR)){
+                                sh "ls -la ${REPO_DIR}"
+                                echo "file  exists in the $REPO_URL"
                             } else {
-                                echo "code is doesn't exits.clone latest code from ${REPO_URL} TO ${BRANCH_NAME}"
-                                sh """
-                                git clone -b ${BRANCH_NAME} ${REPO_URL} ${WORK_DIR}
-                                cd ${WORK_DIR} && git pull origin ${BRANCH_NAME}
-                                """
+                                echo "file doesn't exist in $REPO_URL "
                             }
-
-                            dir(REPO_DIR) {
-                                checkout([$class: 'GitSCM',
-                                    branches: [[name: BRANCH_NAME]], 
-                                    userRemoteConfigs: [[url: REPO_URL]]
-                                ])
-                            }
-                            env.CHECK_AND_PULL_STATUS ='SUCCESS'
+                            env.CHECK_STATUS ='SUCCESS'
                         } catch(Exception e) {
-                            env.CHECK_AND_PULL_STATUS ='FAILED'
-                            error("failed to check and pull the $REPO_URL:${e.getMessage()}")
+                            env.CHECK_STATUS ='FAILED'
+                            error("failed to check the $REPO_URL:${e.getMessage()}")
                         }
-
-                    }
+                    }    
                 }
             }
+        
+            stage('pull'){
+                steps{
+                    script{
+                        try{
+                            if(fileExists(REPO_DIR)){
+                                echo "pulled latest version of the code from ${REPO_URL} to ${REPO_DIR}"
+                                sh "cd ${REPO_DIR} && git pull origin ${BRANCH_NAME}"
+                                dir(REPO_DIR) {
+                            checkout([$class: 'GitSCM',
+                                branches: [[name: BRANCH_NAME]],
+                                userRemoteConfigs: [[url: REPO_URL]]
+                            ])
+                        }
+                            
+                            } else {
+                                echo "cloned code from ${REPO_URL} and pulling latest version of the code to ${REPO_DIR}"
+                                sh """
+                                git clone -b ${BRANCH_NAME} ${REPO_URL} ${REPO_DIR}
+                                cd ${REPO_DIR} && git pull origin ${BRANCH_NAME}
+                                """
+                                dir(REPO_DIR) {
+                            checkout([$class: 'GitSCM',
+                                branches: [[name: BRANCH_NAME]],
+                                userRemoteConfigs: [[url: REPO_URL]]
+                            ])} 
+                            }
+                            env.PULL_STATUS ='SUCCESS'
+                        } catch(Exception e) {
+                            env.PULL_STATUS ='FAILED'
+                            error("failed to pull the latest version from ${REPO_URL}:${e.getMessage()}")
+                        }
+                    }
+                }
+        }
             
 
             stage('input') {
