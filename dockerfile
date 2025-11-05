@@ -4,7 +4,7 @@ RUN apt update
 
 RUN apt-get -y  update 
 
-RUN apt-get-y install apache2
+RUN apt-get -y install apache2
 
 COPY index.html  /var/www/html 
 
