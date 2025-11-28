@@ -3,7 +3,7 @@ pipeline{
 
     environment{
         REPO_URL= "https://github.com/nikhila1511ch/task-2.git"
-        REPO_DIR='-'
+        REPO_DIR='task-2'
         BRANCH_NAME='main'
         DOCKER_REPO="nikhila1511/task-2"
         DOCKER_USERNAME='nikhila1511'
