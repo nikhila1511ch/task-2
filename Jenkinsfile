@@ -11,7 +11,7 @@ pipeline{
         IMAGE_NAME ='ubuntu'
         IMAGE_TAG='latest'
         TARGET_SERVER='13.203.96.238'
-        webhook_url='https://13.203.96.238:8080/task-2/'
+        webhook_url='http://13.203.96.238:8080/task-2/'
     }
         
     
