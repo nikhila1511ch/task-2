@@ -81,7 +81,7 @@ pipeline{
                                 docker build -t ${DOCKER_REPO}:${IMAGE_TAG} .
                                 docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
                                 docker tag ${DOCKER_REPO}:${IMAGE_TAG} ${DOCKER_USERNAME}:${IMAGE_TAG}
-                                docker push ${DOCKER_USERNAME}:${IMAGE_TAG}
+                                docker push ${DOCKER_REPO}:${IMAGE_TAG}
                                 """
                                 }
                                 echo "docker image created and pushed to $DOCKER_REPO"
