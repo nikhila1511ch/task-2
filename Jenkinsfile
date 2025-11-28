@@ -10,10 +10,11 @@ pipeline{
         DOCKER_PASSWORD='Nikhila@1511'
         IMAGE_NAME ='ubuntu'
         IMAGE_TAG='latest'
-        TARGET_SERVER='54.161.13.134'
+        TARGET_SERVER='13.203.96.238'
+        webhook_url='https://13.203.96.238:8080/github-webhook/'
     }
         
-
+    
         stages{
             stage('check'){
                 steps{
