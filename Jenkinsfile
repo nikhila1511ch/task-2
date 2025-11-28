@@ -80,7 +80,7 @@ pipeline{
                                 sh """
                                 docker build -t ${DOCKER_REPO}:${IMAGE_TAG} .
                                 docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
-                                docker tag ${DOCKER_REPO}:${IMAGE_TAG} ${DOCKER_USERNAME}/${REPO_NAME}:${IMAGE_TAG}
+                                docker tag ${DOCKER_REPO}:${IMAGE_TAG} ${DOCKER_USERNAME}:${IMAGE_TAG}
                                 docker push ${DOCKER_USERNAME}:${IMAGE_TAG}
                                 """
                                 }
@@ -126,7 +126,7 @@ pipeline{
                             echo "running image comtainer"
                             sh"""
                             docker rm -f task1app || true
-                            docker run -d -p 9000:80 --name task2app ${DOCKER_USERNAME}/${REPO_NAME}:${IMAGE_TAG}
+                            docker run -d -p 9000:80 --name task2app ${DOCKER_USERNAME}:${IMAGE_TAG}
                             """
                             env.DEPLOY_STATUS ='SUCCESS'
                         } catch(Exception e) {
