@@ -81,7 +81,7 @@ pipeline{
                                 docker build -t ${DOCKER_REPO}:${IMAGE_TAG} .
                                 docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
                                 docker tag ${DOCKER_REPO}:${IMAGE_TAG} ${DOCKER_USERNAME}/${REPO_NAME}:${IMAGE_TAG}
-                                docker push ${DOCKER_USERNAME}/${REPO_NAME}:${IMAGE_TAG}
+                                docker push ${DOCKER_USERNAME}:${IMAGE_TAG}
                                 """
                                 }
                                 echo "docker image created and pushed to $DOCKER_REPO"
@@ -106,8 +106,8 @@ pipeline{
                             sh """
                             docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
                             docker pull ${DOCKER_REPO}:${IMAGE_TAG}
-                            docker pull ${DOCKER_USERNAME}/${REPO_NAME}:alpine
-                            docker pull ${DOCKER_USERNAME}/${REPO_NAME}:busybox
+                            docker pull ${DOCKER_USERNAME}:alpine
+                            docker pull ${DOCKER_USERNAME}:busybox
                             """
                             env.PULL_FROM_DOCKER_REPO_STATUS ='SUCCESS'
                         } catch(Exception e) {
