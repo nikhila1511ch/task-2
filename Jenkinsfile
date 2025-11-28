@@ -106,8 +106,8 @@ pipeline{
                             sh """
                             docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
                             docker pull ${DOCKER_REPO}:${IMAGE_TAG}
-                            docker pull ${DOCKER_USERNAME}:alpine
-                            docker pull ${DOCKER_USERNAME}:busybox
+                            docker pull ${DOCKER_REPO}:alpine
+                            docker pull ${DOCKER_REPO}:busybox
                             """
                             env.PULL_FROM_DOCKER_REPO_STATUS ='SUCCESS'
                         } catch(Exception e) {
